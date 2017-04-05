@@ -11,14 +11,14 @@
 
 namespace Symfony\Component\Debug\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\Debug\ErrorHandler;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 
-class DebugClassLoaderTest extends TestCase
+class DebugClassLoaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var int Error reporting level before running tests
+     * @var int Error reporting level before running tests.
      */
     private $errorReporting;
 
@@ -26,7 +26,7 @@ class DebugClassLoaderTest extends TestCase
 
     protected function setUp()
     {
-        $this->errorReporting = error_reporting(E_ALL);
+        $this->errorReporting = error_reporting(E_ALL | E_STRICT);
         $this->loader = new ClassLoader();
         spl_autoload_register(array($this->loader, 'loadClass'), true, true);
         DebugClassLoader::enable();
@@ -108,6 +108,8 @@ class DebugClassLoaderTest extends TestCase
             $this->fail('ContextErrorException expected');
         } catch (\ErrorException $exception) {
             // if an exception is thrown, the test passed
+            restore_error_handler();
+            restore_exception_handler();
             $this->assertStringStartsWith(__FILE__, $exception->getFile());
             if (PHP_VERSION_ID < 70000) {
                 $this->assertRegExp('/^Runtime Notice: Declaration/', $exception->getMessage());
@@ -116,9 +118,11 @@ class DebugClassLoaderTest extends TestCase
                 $this->assertRegExp('/^Warning: Declaration/', $exception->getMessage());
                 $this->assertEquals(E_WARNING, $exception->getSeverity());
             }
-        } finally {
+        } catch (\Exception $exception) {
             restore_error_handler();
             restore_exception_handler();
+
+            throw $exception;
         }
     }
 
@@ -171,7 +175,7 @@ class DebugClassLoaderTest extends TestCase
      */
     public function testDeprecatedSuper($class, $super, $type)
     {
-        set_error_handler(function () { return false; });
+        set_error_handler(function() { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_DEPRECATED);
 
@@ -201,7 +205,7 @@ class DebugClassLoaderTest extends TestCase
 
     public function testInterfaceExtendsDeprecatedInterface()
     {
-        set_error_handler(function () { return false; });
+        set_error_handler(function() { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_NOTICE);
 
@@ -223,7 +227,7 @@ class DebugClassLoaderTest extends TestCase
 
     public function testDeprecatedSuperInSameNamespace()
     {
-        set_error_handler(function () { return false; });
+        set_error_handler(function() { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_NOTICE);
 
@@ -249,7 +253,7 @@ class DebugClassLoaderTest extends TestCase
             $this->markTestSkipped('PHP7 already prevents using reserved names.');
         }
 
-        set_error_handler(function () { return false; });
+        set_error_handler(function() { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_NOTICE);
 
