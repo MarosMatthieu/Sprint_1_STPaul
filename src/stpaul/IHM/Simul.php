@@ -277,7 +277,6 @@ class Simul {
 		}
 	}
 	
-	
 	public function QuotientFamilial(){
 		$nbEnfant = $this->getFamNbEnfant();
 		
