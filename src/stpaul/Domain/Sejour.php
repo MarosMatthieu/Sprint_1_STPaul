@@ -129,5 +129,7 @@ class Sejour {
         /**  return substr($pDte, -2).substr($pDte, -5, 2).substr($pDte, 4); */
         return $pDte->format("d-m-Y");
     }
+    
+    
 
 }

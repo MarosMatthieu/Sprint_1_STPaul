@@ -266,6 +266,10 @@ class Simul {
 		$this->simulTotalDepartMultiple = 0;
 	}
 	
+	public function FamilleNombreuse(){
+		$nbEnfant = $this->getFamNbEnfant();
+	}
+	
 }
 
 
