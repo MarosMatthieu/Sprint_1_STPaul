@@ -278,16 +278,21 @@ class Simul {
 	}
 	
 	public function QuotientFamilial(){
-		$nbEnfant = $this->getFamNbEnfant();
+		$QF = $this->getFamQF();
 		
-		if ($nbEnfant == 2){
-			$this->setSimulReducFamilleNombreuse(20);
-		}
-		else if ($nbEnfant > 2){
-			$this->setSimulReducFamilleNombreuse(40);
+		if ($QF > 500){
+			$this->setSimulReducQF(10);
 		}
 	}
 	
+	
+	public function DepartMultiple(){
+		$EmfantsPartant= $this->getSimulNbEnfPartant();
+		
+		if ($EmfantsPartant > 1){
+			$this->setSimulReducDepartMultiple(10);
+		}
+	}
 }
 
 
