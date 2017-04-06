@@ -268,6 +268,24 @@ class Simul {
 	
 	public function FamilleNombreuse(){
 		$nbEnfant = $this->getFamNbEnfant();
+		
+		if ($nbEnfant == 2){
+			$this->setSimulReducFamilleNombreuse(20);
+		}
+		else if ($nbEnfant > 2){
+			$this->setSimulReducFamilleNombreuse(40);	
+		}
+	}
+	
+	public function QuotientFamilial(){
+		$nbEnfant = $this->getFamNbEnfant();
+		
+		if ($nbEnfant == 2){
+			$this->setSimulReducFamilleNombreuse(20);
+		}
+		else if ($nbEnfant > 2){
+			$this->setSimulReducFamilleNombreuse(40);
+		}
 	}
 	
 }
