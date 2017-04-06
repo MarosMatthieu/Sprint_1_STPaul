@@ -293,6 +293,16 @@ class Simul {
 			$this->setSimulReducDepartMultiple(10);
 		}
 	}
+	
+	public function calcSousTotal(){
+		$reducQF = $this->getSimulReducQF();
+		
+		if ($EmfantsPartant > 1){
+			$this->setSimulReducDepartMultiple(10);
+		}
+	}
+	
+	
 }
 
 
